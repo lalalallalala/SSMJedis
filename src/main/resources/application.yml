@@ -1,0 +1,26 @@
+server:
+  port: 80
+logging:
+  level:
+    root: info
+    com.example: debug
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: mybatis/**/*Mapper.xml
+  typeAliasesPackage: com.example.**.bean.
+
+
+spring:
+  datasource:
+    username: root
+    password: Han931784013!
+    url: jdbc:mysql://119.45.156.98:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    druid:
+      initial-size: 2
+      min-idle: 2
+      max-active: 3
+      max-wait: 2000

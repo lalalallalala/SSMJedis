@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.redis.dao.EmployeeDao">
+
+	<select id="get" resultType="com.example.redis.bean.Employee">
+		select
+		`id`,`name`,`age` from employee
+		where id = #{value}
+	</select>
+
+	<select id="queryCommodityByCode" resultType="map">
+		select
+		`id`,`name`,`age` from employee
+		where id = #{value}
+	</select>
+
+	<select id="queryCommodityByCode2" resultType="map">
+		select
+		`id`,`name`,`age` from employee
+		where id in
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</select>
+
+
+	<select id="count" resultType="int">
+		select count(*) from employee
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="age != null and age != ''"> and age = #{age} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.example.redis.bean.Employee"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into employee
+		(
+		`name`,
+		`age`
+		)
+		values
+		(
+		#{name},
+		#{age}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.example.redis.bean.Employee">
+		update employee
+		<set>
+			<if test="id != null">`id` = #{id}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="age != null">`age` = #{age}, </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from employee where id = #{id}
+	</delete>
+
+	<select id="list" resultType="com.example.redis.bean.Employee">
+		select `id`, `name`,`age` from
+		employee
+		<where>
+			<if test="deptId != null and deptId != ''"> and dept_id = #{deptId} </if>
+			<if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="orderNum != null and orderNum != ''"> and order_num = #{orderNum} </if>
+			<if test="delFlag != null and delFlag != ''"> and del_flag = #{delFlag} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="list2" resultType="com.example.redis.bean.Employee">
+		select `id`, `name`,`age` from
+		employee
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+		</where>
+	</select>
+
+
+
+
+
+</mapper>
